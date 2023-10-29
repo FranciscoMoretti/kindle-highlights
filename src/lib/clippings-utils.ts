@@ -1,7 +1,7 @@
 // const dropArea = document.getElementById("drop-area") as HTMLDivElement;
 // const bookEmojis: string[] = ["📕", "📙", "📒", "📗", "📘", "📓", "📔"];
 
-import { Clipping, ClippingsCollection } from "@/lib/types/clippings";
+import { type Clipping, type ClippingsCollection } from "@/lib/types/clippings";
 import { slugify } from "transliteration";
 
 function download(
@@ -89,17 +89,15 @@ export function readFile(file: File): Promise<ClippingsCollection> {
         console.log("Grouping clippings by titles");
         const groupByTitles = groupBy("title");
         const groupedClippings = groupByTitles(parsed);
-
+        const clippingsCollection = Object.fromEntries(
+          Object.entries(groupedClippings).map(([title, clippings]) => [
+            slugify(title),
+            clippings,
+          ]),
+        );
         // const booksTitles = Object.keys(groupedClippings);
         console.log("Done!");
-        resolve(
-          new Map(
-            Object.entries(groupedClippings).map(([string, clippings]) => [
-              slugify(string),
-              clippings,
-            ]),
-          ),
-        );
+        resolve(clippingsCollection);
       } catch (error) {
         console.error(error); // this will log the error message to the console
         reject(error);
@@ -163,12 +161,12 @@ export function generateMarkdown(title: string, clippings: Clipping[]): string {
   // return str;
 }
 
-const groupBy = (key: string) => (array: { [key: string]: any }[]) =>
+const groupBy = (key: string) => (array: Clipping[]) =>
   array.reduce(
     (objectsByKeyValue, obj) => {
       const value = obj[key];
       objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
       return objectsByKeyValue;
     },
-    {} as { [key: string]: any },
+    {} as Record<string, Clipping[]>,
   );

@@ -9,7 +9,7 @@ import React, {
 import { type ClippingsCollection } from "@/lib/types/clippings";
 
 type ClippingsCollectionContextType = {
-  clippingsCollection: ClippingsCollection;
+  clippingsCollection: ClippingsCollection | undefined;
   setClippingsCollection: (clippings: ClippingsCollection) => void;
 };
 
@@ -26,20 +26,25 @@ const LOCAL_STORAGE_KEY = "clippingsData";
 const ClippingsCollectionProvider: React.FC<
   ClippingsCollectionProviderProps
 > = ({ children }) => {
-  const [clippingsCollection, setClippingsCollection] =
-    useState<ClippingsCollection>(() => {
-      const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
-      return storedData ? new Map(JSON.parse(storedData)) : new Map();
-    });
+  const localStorage =
+    typeof window !== "undefined" ? window.localStorage : undefined;
+  const [clippingsCollection, setClippingsCollection] = useState<
+    ClippingsCollection | undefined
+  >(undefined);
 
   useEffect(() => {
-    // Serialize and store the data in localStorage whenever clippingsByTitle changes
-    localStorage.setItem(
+    const storedData = localStorage?.getItem(LOCAL_STORAGE_KEY);
+    if (storedData && storedData != "undefined") {
+      setClippingsCollection(JSON.parse(storedData) as ClippingsCollection);
+    }
+  }, []); // Runs once on component mount
+
+  useEffect(() => {
+    localStorage?.setItem(
       LOCAL_STORAGE_KEY,
-      JSON.stringify(Array.from(clippingsCollection.entries())),
+      JSON.stringify(clippingsCollection),
     );
   }, [clippingsCollection]);
-
   return (
     <ClippingsCollectionContext.Provider
       value={{

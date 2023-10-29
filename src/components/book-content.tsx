@@ -4,8 +4,8 @@ import { HighlightsList } from "./highlights-list";
 
 export default function BookContent({ slug }: { slug: string }) {
   const { clippingsCollection } = useClippingsCollection();
-  const bookClippings = clippingsCollection?.get(slug)
-    ? clippingsCollection.get(slug)
+  const bookClippings = clippingsCollection?.[slug]
+    ? clippingsCollection[slug]
     : null;
   return (
     <>

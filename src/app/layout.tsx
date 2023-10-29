@@ -25,7 +25,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`font-sans ${inter.variable} container`}>
+      <body className={`font-sans ${inter.variable} `}>
         <TRPCReactProvider headers={headers()}>
           <ClippingsCollectionProvider>
             <MainNav />

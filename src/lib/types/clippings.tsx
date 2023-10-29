@@ -4,4 +4,4 @@ export type Clipping = {
   timestamp: string;
   fullText: string;
 };
-export type ClippingsCollection = Map<string, Clipping[]>;
+export type ClippingsCollection = Record<string, Clipping[]>;
