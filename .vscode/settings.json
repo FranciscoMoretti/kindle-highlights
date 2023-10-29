@@ -1,0 +1,13 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "cSpell.words": [
+    "clsx",
+    "lucide",
+    "nextjs",
+    "superjson",
+    "tailwindcss",
+    "tanstack",
+    "trpc"
+  ]
+}
