@@ -14,6 +14,7 @@ import { generateFilename, generateMarkdown } from "@/lib/clippings-utils";
 import { Clipping } from "@/lib/types/clippings";
 
 import { MdExporter } from "./md-exporter";
+import Link from "next/link";
 
 const notifications = [
   {
@@ -35,11 +36,11 @@ type CardProps = React.ComponentProps<typeof Card> & {
   clippings: Clipping[];
 };
 
-export function BookCard({ className, title, clippings }: CardProps) {
+export function BookCard({ className, title: slug, clippings }: CardProps) {
   return (
     <Card className={cn("w-[380px]", className)}>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle>{slug}</CardTitle>
         <CardDescription>{`${clippings.length} highlights`}</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">
@@ -75,13 +76,15 @@ export function BookCard({ className, title, clippings }: CardProps) {
       </CardContent>
       <CardFooter>
         <div className="flex w-full flex-col items-center justify-center gap-2 ">
-          <Button className="w-full">
-            {/* <Check className="mr-2 h-4 w-4" />  */}
-            See highlights
-          </Button>
+          <Link href={"/book/" + slug}>
+            <Button className="w-full">
+              {/* <Check className="mr-2 h-4 w-4" />  */}
+              See highlights
+            </Button>
+          </Link>
           <MdExporter
-            filename={`${generateFilename(title)}.md`}
-            content={generateMarkdown(title, clippings)}
+            filename={`${generateFilename(slug)}.md`}
+            content={generateMarkdown(slug, clippings)}
           >
             <Button className="w-full">
               {/* <Check className="mr-2 h-4 w-4" />  */}

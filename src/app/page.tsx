@@ -4,6 +4,7 @@ import { CreatePost } from "@/components/create-post";
 import { getServerAuthSession } from "@/server/auth";
 import { api } from "@/trpc/server";
 import { MyClippingsForm } from "@/components/my-clippings-form";
+import { BooksList } from "@/components/books-list";
 
 export default async function Home() {
   const hello = await api.post.hello.query({ text: "from tRPC" });
@@ -60,6 +61,7 @@ export default async function Home() {
         <CrudShowcase />
 
         <MyClippingsForm />
+        <BooksList />
       </div>
     </main>
   );

@@ -2,6 +2,7 @@
 // const bookEmojis: string[] = ["📕", "📙", "📒", "📗", "📘", "📓", "📔"];
 
 import { Clipping, ClippingsCollection } from "@/lib/types/clippings";
+import GithubSlugger from "github-slugger";
 
 function download(
   element: HTMLAnchorElement,
@@ -78,6 +79,8 @@ export function readFile(file: File): Promise<ClippingsCollection> {
     const reader = new FileReader();
 
     reader.onload = function (event) {
+      const slugger = new GithubSlugger();
+
       try {
         console.log("Reading the file");
         const contents = event.target?.result as string;
@@ -91,7 +94,14 @@ export function readFile(file: File): Promise<ClippingsCollection> {
 
         // const booksTitles = Object.keys(groupedClippings);
         console.log("Done!");
-        resolve(new Map(Object.entries(groupedClippings)));
+        resolve(
+          new Map(
+            Object.entries(groupedClippings).map(([string, clippings]) => [
+              slugger.slug(string),
+              clippings,
+            ]),
+          ),
+        );
       } catch (error) {
         console.error(error); // this will log the error message to the console
         reject(error);
