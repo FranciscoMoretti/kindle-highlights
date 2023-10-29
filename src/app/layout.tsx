@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 
 import { TRPCReactProvider } from "@/trpc/react";
-import { ClippingsCollectionProvider } from "@/lib/clippings-provider";
+import { ClippingsCollectionProvider } from "@/lib/clippings-collection-provider";
 import { MainNav } from "@/components/main-nav";
 
 const inter = Inter({
@@ -27,7 +27,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${inter.variable} container`}>
         <TRPCReactProvider headers={headers()}>
-          <ClippingsCollectionProvider><MainNav />{children}</ClippingsCollectionProvider>
+          <ClippingsCollectionProvider>
+            <MainNav />
+            {children}
+          </ClippingsCollectionProvider>
         </TRPCReactProvider>
       </body>
     </html>

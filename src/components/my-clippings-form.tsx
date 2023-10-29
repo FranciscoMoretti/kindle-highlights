@@ -2,7 +2,7 @@
 import { FileInputForm } from "@/components/file-input-form";
 import { readFile } from "@/lib/clippings-utils";
 
-import { useClippingsCollection } from "@/lib/clippings-provider";
+import { useClippingsCollection } from "@/lib/clippings-collection-provider";
 
 export function MyClippingsForm() {
   const { setClippingsCollection } = useClippingsCollection();

@@ -4,6 +4,7 @@ import React, {
   type ReactNode,
   useContext,
   useState,
+  useEffect,
 } from "react";
 import { type ClippingsCollection } from "@/lib/types/clippings";
 
@@ -20,17 +21,30 @@ type ClippingsCollectionProviderProps = {
   children: ReactNode;
 };
 
+const LOCAL_STORAGE_KEY = "clippingsData";
+
 const ClippingsCollectionProvider: React.FC<
   ClippingsCollectionProviderProps
 > = ({ children }) => {
   const [clippingsCollection, setClippingsCollection] =
-    useState<ClippingsCollection>(new Map());
+    useState<ClippingsCollection>(() => {
+      const storedData = localStorage.getItem(LOCAL_STORAGE_KEY);
+      return storedData ? new Map(JSON.parse(storedData)) : new Map();
+    });
+
+  useEffect(() => {
+    // Serialize and store the data in localStorage whenever clippingsByTitle changes
+    localStorage.setItem(
+      LOCAL_STORAGE_KEY,
+      JSON.stringify(Array.from(clippingsCollection.entries())),
+    );
+  }, [clippingsCollection]);
 
   return (
     <ClippingsCollectionContext.Provider
       value={{
-        clippingsCollection: clippingsCollection,
-        setClippingsCollection: setClippingsCollection,
+        clippingsCollection,
+        setClippingsCollection,
       }}
     >
       {children}

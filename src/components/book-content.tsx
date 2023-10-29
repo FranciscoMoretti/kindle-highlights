@@ -1,5 +1,5 @@
 "use client";
-import { useClippingsCollection } from "../lib/clippings-provider";
+import { useClippingsCollection } from "../lib/clippings-collection-provider";
 import { HighlightsList } from "./highlights-list";
 
 export default function BookContent({ slug }: { slug: string }) {

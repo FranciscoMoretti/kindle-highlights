@@ -2,7 +2,7 @@
 // const bookEmojis: string[] = ["📕", "📙", "📒", "📗", "📘", "📓", "📔"];
 
 import { Clipping, ClippingsCollection } from "@/lib/types/clippings";
-import GithubSlugger from "github-slugger";
+import { slugify } from "transliteration";
 
 function download(
   element: HTMLAnchorElement,
@@ -32,12 +32,12 @@ function validateType(fileList: FileList): boolean {
 
 // Utility functions
 const cleanUp = (str: string) => str.replace(/[\n\r]+/g, "");
+const SEPARATOR = "==========";
 
 function parseClippings(contents: string): Clipping[] {
-  const separator = "==========";
   const timestampRegex = /Added on|Добавлено|Añadido el:.*/;
 
-  const clippings = contents.split(separator);
+  const clippings = contents.split(SEPARATOR);
 
   return clippings
     .map((clipping) => {
@@ -62,7 +62,7 @@ function parseClippings(contents: string): Clipping[] {
         },
       );
 
-      return { title, text, timestamp };
+      return { title, text, timestamp, fullText: clipping };
     })
     .filter((value): value is Clipping => value !== null);
 }
@@ -79,8 +79,6 @@ export function readFile(file: File): Promise<ClippingsCollection> {
     const reader = new FileReader();
 
     reader.onload = function (event) {
-      const slugger = new GithubSlugger();
-
       try {
         console.log("Reading the file");
         const contents = event.target?.result as string;
@@ -97,7 +95,7 @@ export function readFile(file: File): Promise<ClippingsCollection> {
         resolve(
           new Map(
             Object.entries(groupedClippings).map(([string, clippings]) => [
-              slugger.slug(string),
+              slugify(string),
               clippings,
             ]),
           ),
@@ -156,12 +154,13 @@ export function generateFilename(title: any) {
 }
 
 export function generateMarkdown(title: string, clippings: Clipping[]): string {
+  return clippings.map((clipping) => clipping.fullText).join(SEPARATOR);
   // TODO: Implement the inverse conversion to preserve the original format
-  let str = "";
-  for (const clipping of clippings) {
-    str += `> ${clipping["text"]}\n\n${clipping["timestamp"]}\n\n`;
-  }
-  return str;
+  // let str = "";
+  // for (const clipping of clippings) {
+  //   str += `> ${clipping["text"]}\n\n${clipping["timestamp"]}\n\n`;
+  // }
+  // return str;
 }
 
 const groupBy = (key: string) => (array: { [key: string]: any }[]) =>
