@@ -22,7 +22,7 @@ export function BooksCards() {
                 "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80",
             }}
             slug={slug}
-            className="w-[230px]"
+            className="w-[250px]"
             aspectRatio="portrait"
             width={250}
             height={330}
