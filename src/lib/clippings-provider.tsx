@@ -1,3 +1,4 @@
+"use client";
 import React, {
   createContext,
   type ReactNode,
@@ -7,8 +8,8 @@ import React, {
 import { type ClippingsCollection } from "@/lib/types/clippings";
 
 type ClippingsCollectionContextType = {
-  clippingsByTitle: ClippingsCollection;
-  setClippingsByTitle: (clippings: ClippingsCollection) => void;
+  clippingsCollection: ClippingsCollection;
+  setClippingsCollection: (clippings: ClippingsCollection) => void;
 };
 
 const ClippingsCollectionContext = createContext<
@@ -28,8 +29,8 @@ const ClippingsCollectionProvider: React.FC<
   return (
     <ClippingsCollectionContext.Provider
       value={{
-        clippingsByTitle: clippingsCollection,
-        setClippingsByTitle: setClippingsCollection,
+        clippingsCollection: clippingsCollection,
+        setClippingsCollection: setClippingsCollection,
       }}
     >
       {children}

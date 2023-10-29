@@ -5,10 +5,11 @@ import { ClippingsCollection } from "@/lib/types/clippings";
 
 import { useState } from "react";
 import { HighlightList } from "./HighlightList";
+import { useClippingsCollection } from "@/lib/clippings-provider";
 
 export function MyClippingsForm() {
-  const [clippingsByTitle, setClippingsByTitle] =
-    useState<ClippingsCollection | null>(null);
+  const { clippingsCollection, setClippingsCollection } =
+    useClippingsCollection();
   return (
     <>
       <FileInputForm
@@ -17,11 +18,13 @@ export function MyClippingsForm() {
         handleSubmit={async (e) => {
           const groupedClippings = await readFile(e[0]);
           if (groupedClippings) {
-            setClippingsByTitle(groupedClippings);
+            setClippingsCollection(groupedClippings);
           }
         }}
       />
-      {clippingsByTitle ? <HighlightList clippings={clippingsByTitle} /> : null}
+      {clippingsCollection ? (
+        <HighlightList clippings={clippingsCollection} />
+      ) : null}
     </>
   );
 }
