@@ -1,7 +1,8 @@
-import { ClippingsByTitle } from "@/lib/clippings";
+import { ClippingsCollection } from "@/lib/types/clippings";
+import { BookCard } from "./book-card";
 
 // HighlightList component
-export const HighlightList: React.FC<{ clippings: ClippingsByTitle }> = ({
+export const HighlightList: React.FC<{ clippings: ClippingsCollection }> = ({
   clippings,
 }) => {
   console.log(clippings);
@@ -11,18 +12,19 @@ export const HighlightList: React.FC<{ clippings: ClippingsByTitle }> = ({
       <h2>List of Highlights</h2>
       {clippings
         ? Array.from(clippings).map(([title, clippings], index) => (
-            <div key={index}>
-              <h3>Book Title: {title}</h3>
-              <ul>
-                {clippings.map((clipping, subIndex) => (
-                  <li key={subIndex}>
-                    <p>Title: {clipping.title}</p>
-                    <p>Text: {clipping.text}</p>
-                    <p>Timestamp: {clipping.timestamp}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <BookCard key={index} title={title} clippings={clippings} />
+            // <div key={index}>
+            //   <h3>Book Title: {title}</h3>
+            //   <ul>
+            //     {clippings.map((clipping, subIndex) => (
+            //       <li key={subIndex}>
+            //         <p>Title: {clipping.title}</p>
+            //         <p>Text: {clipping.text}</p>
+            //         <p>Timestamp: {clipping.timestamp}</p>
+            //       </li>
+            //     ))}
+            //   </ul>
+            // </div>
           ))
         : null}
     </div>

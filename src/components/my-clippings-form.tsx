@@ -1,12 +1,14 @@
 "use client";
 import { FileInputForm } from "@/components/file-input-form";
-import { ClippingsByTitle, readFile } from "@/lib/clippings";
+import { readFile } from "@/lib/clippings-utils";
+import { ClippingsCollection } from "@/lib/types/clippings";
+
 import { useState } from "react";
 import { HighlightList } from "./HighlightList";
 
 export function MyClippingsForm() {
   const [clippingsByTitle, setClippingsByTitle] =
-    useState<ClippingsByTitle | null>(null);
+    useState<ClippingsCollection | null>(null);
   return (
     <>
       <FileInputForm

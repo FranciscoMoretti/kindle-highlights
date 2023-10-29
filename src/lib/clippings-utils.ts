@@ -1,6 +1,8 @@
 // const dropArea = document.getElementById("drop-area") as HTMLDivElement;
 // const bookEmojis: string[] = ["📕", "📙", "📒", "📗", "📘", "📓", "📔"];
 
+import { Clipping, ClippingsCollection } from "@/lib/types/clippings";
+
 function download(
   element: HTMLAnchorElement,
   filename: string,
@@ -29,13 +31,6 @@ function validateType(fileList: FileList): boolean {
 
 // Utility functions
 const cleanUp = (str: string) => str.replace(/[\n\r]+/g, "");
-
-type Clipping = {
-  title: string;
-  text: string;
-  timestamp: string;
-};
-export type ClippingsByTitle = Map<string, Clipping[]>;
 
 function parseClippings(contents: string): Clipping[] {
   const separator = "==========";
@@ -78,7 +73,7 @@ function getAttribute(attribute: string, regex?: RegExp): string {
     : cleanedAttribute;
 }
 
-export function readFile(file: File): Promise<ClippingsByTitle> {
+export function readFile(file: File): Promise<ClippingsCollection> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -131,7 +126,7 @@ function renderBook(
   const firstChild = booksList?.firstChild;
 
   if (booksList) {
-    const contents = generateMarkdown(title, books);
+    const contents = generateMarkdown(title, clippings);
     const filename = title
       .replace(/\"/gi, "'")
       .replace(/[\\\/"\*\:\?<>|]/gi, "");
@@ -140,13 +135,20 @@ function renderBook(
   }
 }
 
-function generateMarkdown(
-  title: string,
-  books: Record<string, { title: string; text: string; timestamp: string }[]>,
-): string {
-  const currentBook = books[title];
+function generateDownload(title, clippings) {
+  const contents = generateMarkdown(title, clippings);
+  const filename = generateFilename(title);
+  download(anchor, `${filename}.md`, contents);
+}
+
+export function generateFilename(title: any) {
+  return title.replace(/\"/gi, "'").replace(/[\\\/"\*\:\?<>|]/gi, "");
+}
+
+export function generateMarkdown(title: string, clippings: Clipping[]): string {
+  // TODO: Implement the inverse conversion to preserve the original format
   let str = "";
-  for (const clipping of currentBook) {
+  for (const clipping of clippings) {
     str += `> ${clipping["text"]}\n\n${clipping["timestamp"]}\n\n`;
   }
   return str;
