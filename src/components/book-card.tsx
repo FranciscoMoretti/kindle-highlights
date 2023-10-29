@@ -32,15 +32,15 @@ const notifications = [
 ];
 
 type CardProps = React.ComponentProps<typeof Card> & {
-  title: string;
+  slug: string;
   clippings: Clipping[];
 };
 
-export function BookCard({ className, title: slug, clippings }: CardProps) {
+export function BookCard({ className, slug, clippings }: CardProps) {
   return (
     <Card className={cn("w-[380px]", className)}>
       <CardHeader>
-        <CardTitle>{slug}</CardTitle>
+        <CardTitle>{clippings[0]?.title}</CardTitle>
         <CardDescription>{`${clippings.length} highlights`}</CardDescription>
       </CardHeader>
       <CardContent className="grid gap-4">

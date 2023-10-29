@@ -11,11 +11,13 @@ export const BooksList: React.FC<{}> = () => {
   return (
     <div>
       <h2>List of Highlights</h2>
-      {clippingsCollection
-        ? Array.from(clippingsCollection).map(([title, clippings], index) => (
-            <BookCard key={index} title={title} clippings={clippings} />
-          ))
-        : null}
+      <div className="grid w-full grid-cols-3 gap-x-4 gap-y-6">
+        {clippingsCollection
+          ? Array.from(clippingsCollection).map(([title, clippings], index) => (
+              <BookCard key={index} slug={title} clippings={clippings} />
+            ))
+          : null}
+      </div>
     </div>
   );
 };
