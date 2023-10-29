@@ -1,5 +1,10 @@
-import React, { createContext, ReactNode, useContext, useState } from "react";
-import { ClippingsCollection } from "@/lib/types/clippings";
+import React, {
+  createContext,
+  type ReactNode,
+  useContext,
+  useState,
+} from "react";
+import { type ClippingsCollection } from "@/lib/types/clippings";
 
 type ClippingsCollectionContextType = {
   clippingsByTitle: ClippingsCollection;
@@ -17,13 +22,15 @@ type ClippingsCollectionProviderProps = {
 const ClippingsCollectionProvider: React.FC<
   ClippingsCollectionProviderProps
 > = ({ children }) => {
-  const [clippingsByTitle, setClippingsByTitle] = useState<ClippingsCollection>(
-    new Map(),
-  );
+  const [clippingsCollection, setClippingsCollection] =
+    useState<ClippingsCollection>(new Map());
 
   return (
     <ClippingsCollectionContext.Provider
-      value={{ clippingsByTitle, setClippingsByTitle }}
+      value={{
+        clippingsByTitle: clippingsCollection,
+        setClippingsByTitle: setClippingsCollection,
+      }}
     >
       {children}
     </ClippingsCollectionContext.Provider>
