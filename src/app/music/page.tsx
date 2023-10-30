@@ -17,8 +17,11 @@ import { playlists } from "./data/playlists";
 import { BooksCards } from "./components/book-cards";
 import { Suspense } from "react";
 import { AddClippingsButton } from "./components/add-clippings";
+import { useClippingsCollection } from "@/lib/clippings-collection-provider";
 
 export default function MusicPage() {
+  const { clippingsCollection } = useClippingsCollection();
+
   return (
     <>
       <div className="hidden md:block">
@@ -56,41 +59,48 @@ export default function MusicPage() {
                         </div>
                       </div>
                       <Separator className="my-4" />
-                      <div className="relative">
-                        <ScrollArea>
-                          <Suspense>
-                            <BooksCards />
-                          </Suspense>
-                          <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                      </div>
-                      <div className="mt-6 space-y-1">
-                        <h2 className="text-2xl font-semibold tracking-tight">
-                          Made for you
-                        </h2>
-                        <p className="text-sm text-muted-foreground">
-                          Revisit other books
-                        </p>
-                      </div>
-                      <Separator className="my-4" />
-                      <div className="relative">
-                        <ScrollArea>
-                          <div className="flex space-x-4 pb-4">
-                            {madeForYouAlbums.map((album) => (
-                              <AlbumArtwork
-                                key={album.name}
-                                album={album}
-                                slug={""}
-                                className="w-[150px]"
-                                aspectRatio="square"
-                                width={150}
-                                height={150}
-                              />
-                            ))}
+                      {clippingsCollection &&
+                      Object.keys(clippingsCollection).length > 0 ? (
+                        <>
+                          <div className="relative">
+                            <ScrollArea>
+                              <Suspense>
+                                <BooksCards />
+                              </Suspense>
+                              <ScrollBar orientation="horizontal" />
+                            </ScrollArea>
                           </div>
-                          <ScrollBar orientation="horizontal" />
-                        </ScrollArea>
-                      </div>
+                          <div className="mt-6 space-y-1">
+                            <h2 className="text-2xl font-semibold tracking-tight">
+                              Made for you
+                            </h2>
+                            <p className="text-sm text-muted-foreground">
+                              Revisit other books
+                            </p>
+                          </div>
+                          <Separator className="my-4" />
+                          <div className="relative">
+                            <ScrollArea>
+                              <div className="flex space-x-4 pb-4">
+                                {madeForYouAlbums.map((album) => (
+                                  <AlbumArtwork
+                                    key={album.name}
+                                    album={album}
+                                    slug={""}
+                                    className="w-[150px]"
+                                    aspectRatio="square"
+                                    width={150}
+                                    height={150}
+                                  />
+                                ))}
+                              </div>
+                              <ScrollBar orientation="horizontal" />
+                            </ScrollArea>
+                          </div>
+                        </>
+                      ) : (
+                        <ClippingsEmptyPlaceholder />
+                      )}
                     </TabsContent>
                     <TabsContent
                       value="clippings"

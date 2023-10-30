@@ -7,6 +7,7 @@ import React, {
   useEffect,
 } from "react";
 import { type ClippingsCollection } from "@/lib/types/clippings";
+import { set } from "zod";
 
 type ClippingsCollectionContextType = {
   clippingsCollection: ClippingsCollection | undefined;
@@ -34,8 +35,12 @@ const ClippingsCollectionProvider: React.FC<
 
   useEffect(() => {
     const storedData = localStorage?.getItem(LOCAL_STORAGE_KEY);
-    if (storedData && storedData != "undefined") {
-      setClippingsCollection(JSON.parse(storedData) as ClippingsCollection);
+    if (storedData != undefined && storedData != "undefined") {
+      if(storedData != null){
+        setClippingsCollection(JSON.parse(storedData) as ClippingsCollection);
+      }else{
+        setClippingsCollection({});
+      }
     }
   }, []); // Runs once on component mount
 
