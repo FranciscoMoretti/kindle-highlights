@@ -34,6 +34,24 @@ function validateType(fileList: FileList): boolean {
 const cleanUp = (str: string) => str.replace(/[\n\r]+/g, "");
 const SEPARATOR = "==========";
 
+function extractTitleAndAuthor(line: string): {
+  title: string;
+  author: string;
+} {
+  const authorRegex = /\(([^()]+)\)$/; // Matches the last set of parentheses
+  const match = line.match(authorRegex);
+
+  if (match) {
+    const author = match[0].substring(1, match[0].length - 1); // Remove parentheses from start and end
+    const title = line.replace(authorRegex, "").trim();
+
+    return { title, author };
+  } else {
+    // If no author information is found, assume the whole line is the title.
+    return { title: line, author: "" };
+  }
+}
+
 function parseClippings(contents: string): Clipping[] {
   const timestampRegex = /Added on|Добавлено|Añadido el:.*/;
 
@@ -41,7 +59,7 @@ function parseClippings(contents: string): Clipping[] {
 
   return clippings
     .map((clipping) => {
-      const attributes = clipping.split("\n");
+      const attributes = clipping.split("\n").map((line) => line.trim());
 
       // Filter out unnecessary attributes
       const cleanedUpAttributes = attributes.filter(
@@ -49,20 +67,16 @@ function parseClippings(contents: string): Clipping[] {
       );
 
       // Skip current clipping if it doesn't contain at least 3 attributes
-      if (cleanedUpAttributes.length < 3) {
+      if (cleanedUpAttributes == undefined || cleanedUpAttributes.length < 3) {
         return null;
       }
 
-      const [title, timestamp, text] = cleanedUpAttributes.map(
-        (attr, index) => {
-          if (index === 1) {
-            return getAttribute(attr, timestampRegex);
-          }
-          return getAttribute(attr);
-        },
-      );
+      const { title, author } = extractTitleAndAuthor(cleanedUpAttributes[0]!);
 
-      return { title, text, timestamp, fullText: clipping };
+      const timestamp = getAttribute(cleanedUpAttributes[1]!, timestampRegex);
+      const text = getAttribute(cleanedUpAttributes[2]!);
+
+      return { title, author, text, timestamp, fullText: clipping };
     })
     .filter((value): value is Clipping => value !== null);
 }

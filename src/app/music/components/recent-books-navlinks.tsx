@@ -14,7 +14,7 @@ export function RecentBooksNavlinks() {
     return (
       <div className="space-y-1 p-2">
         {clippingsEntries.map(([slug, clippings], i) => (
-          <Link href={"/book/" + slug}>
+          <Link href={"/book/" + slug} key={slug}>
             <Button
               key={`${slug}`}
               variant="ghost"

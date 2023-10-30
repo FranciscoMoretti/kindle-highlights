@@ -16,8 +16,8 @@ export function BooksCards() {
           <AlbumArtwork
             key={slug}
             album={{
-              artist: clippings[0]?.title ?? "",
               name: clippings[0]?.title ?? "",
+              artist: clippings[0]?.author ?? "",
               cover:
                 "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80",
             }}

@@ -14,9 +14,7 @@ export function HighlightsList({ clippings }: { clippings: Clipping[] }) {
             className="rounded-lg bg-white p-4 shadow dark:bg-zinc-950"
           >
             <h2 className="mb-2 text-xl font-bold">{clipping.title}</h2>
-            <h3 className="mb-4 text-lg text-gray-500">
-              by F. Scott Fitzgerald
-            </h3>
+            <h3 className="mb-4 text-lg text-gray-500">by {clipping.author}</h3>
             <p className="mb-4 text-gray-700 dark:text-white">
               {clipping.text}
             </p>
