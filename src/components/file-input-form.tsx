@@ -18,10 +18,12 @@ export function FileInputForm({
   label,
   description,
   handleSubmit,
+  submitButtonText = "Submit",
 }: {
   label: string;
   description: string;
   handleSubmit: (files: FileList) => void;
+  submitButtonText?: string;
 }) {
   // Images
   const MAX_FILE_SIZE = 5242880; // 5 MB
@@ -65,7 +67,10 @@ export function FileInputForm({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col space-y-8"
+      >
         <FormField
           control={form.control}
           name="files"
@@ -100,7 +105,9 @@ export function FileInputForm({
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit" className="self-end">
+          {submitButtonText}
+        </Button>
       </form>
     </Form>
   );

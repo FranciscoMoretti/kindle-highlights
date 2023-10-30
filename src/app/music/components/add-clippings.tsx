@@ -33,33 +33,21 @@ export function AddClippingsButton() {
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add Podcast</DialogTitle>
-          <DialogDescription>
-            Copy and paste the podcast feed URL to import.
-          </DialogDescription>
+          <DialogTitle>Add Clippings</DialogTitle>
+          <DialogDescription>Upload your Kindle clippings.</DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid gap-2">
-            <FileInputForm
-              label={"Clippings File"}
-              description={
-                "Located in kindle storage at 'Kindle/documents/My Clippings.txt'"
-              }
-              handleSubmit={async (e) => {
-                const groupedClippings = await readFile(e[0]);
-                if (groupedClippings) {
-                  setClippingsCollection(groupedClippings);
-                  setOpen(false);
-                }
-              }}
-            />
-          </div>
-        </div>
-        <DialogFooter>
-          <DialogTrigger asChild>
-            <Button>Import Podcast</Button>
-          </DialogTrigger>
-        </DialogFooter>
+        <FileInputForm
+          label={"Clippings File"}
+          description={"Kindle storage: 'Kindle/documents/My Clippings.txt'"}
+          submitButtonText={"Import Clippings"}
+          handleSubmit={async (e) => {
+            const groupedClippings = await readFile(e[0]);
+            if (groupedClippings) {
+              setClippingsCollection(groupedClippings);
+              setOpen(false);
+            }
+          }}
+        />
       </DialogContent>
     </Dialog>
   );
