@@ -9,8 +9,10 @@ export function MyClippingsForm() {
   return (
     <>
       <FileInputForm
-        label={"Clippings"}
-        description={"Upload you My Clippings.txt file"}
+        label={"Clippings File"}
+        description={
+          "Located in kindle storage at 'Kindle/documents/My Clippings.txt'"
+        }
         handleSubmit={async (e) => {
           const groupedClippings = await readFile(e[0]);
           if (groupedClippings) {

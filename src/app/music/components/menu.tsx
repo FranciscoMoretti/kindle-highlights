@@ -179,22 +179,6 @@ export function Menu() {
           </MenubarItem>
         </MenubarContent>
       </MenubarMenu>
-      <MenubarMenu>
-        <MenubarTrigger className="hidden md:block">Account</MenubarTrigger>
-        <MenubarContent forceMount>
-          <MenubarLabel inset>Switch Account</MenubarLabel>
-          <MenubarSeparator />
-          <MenubarRadioGroup value="benoit">
-            <MenubarRadioItem value="andy">Andy</MenubarRadioItem>
-            <MenubarRadioItem value="benoit">Benoit</MenubarRadioItem>
-            <MenubarRadioItem value="Luis">Luis</MenubarRadioItem>
-          </MenubarRadioGroup>
-          <MenubarSeparator />
-          <MenubarItem inset>Manage Famliy...</MenubarItem>
-          <MenubarSeparator />
-          <MenubarItem inset>Add Account...</MenubarItem>
-        </MenubarContent>
-      </MenubarMenu>
     </Menubar>
   );
 }

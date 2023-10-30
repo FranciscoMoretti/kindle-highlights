@@ -16,6 +16,7 @@ import { listenNowAlbums, madeForYouAlbums } from "./data/albums";
 import { playlists } from "./data/playlists";
 import { BooksCards } from "./components/book-cards";
 import { Suspense } from "react";
+import { AddClippingsButton } from "./components/add-clippings";
 
 export default function MusicPage() {
   return (
@@ -28,35 +29,29 @@ export default function MusicPage() {
               <Sidebar playlists={playlists} className="hidden lg:block" />
               <div className="col-span-3 lg:col-span-4 lg:border-l">
                 <div className="h-full px-4 py-6 lg:px-8">
-                  <Tabs defaultValue="music" className="h-full space-y-6">
+                  <Tabs defaultValue="books" className="h-full space-y-6">
                     <div className="space-between flex items-center">
                       <TabsList>
-                        <TabsTrigger value="music" className="relative">
-                          Music
+                        <TabsTrigger value="books" className="relative">
+                          Books
                         </TabsTrigger>
-                        <TabsTrigger value="podcasts">Podcasts</TabsTrigger>
-                        <TabsTrigger value="live" disabled>
-                          Live
-                        </TabsTrigger>
+                        <TabsTrigger value="clippings">Clippings</TabsTrigger>
                       </TabsList>
                       <div className="ml-auto mr-4">
-                        <Button>
-                          <PlusCircledIcon className="mr-2 h-4 w-4" />
-                          Add music
-                        </Button>
+                        <AddClippingsButton />
                       </div>
                     </div>
                     <TabsContent
-                      value="music"
+                      value="books"
                       className="border-none p-0 outline-none"
                     >
                       <div className="flex items-center justify-between">
                         <div className="space-y-1">
                           <h2 className="text-2xl font-semibold tracking-tight">
-                            Listen Now
+                            New Books
                           </h2>
                           <p className="text-sm text-muted-foreground">
-                            Top picks for you. Updated daily.
+                            Your most recent books
                           </p>
                         </div>
                       </div>
@@ -71,10 +66,10 @@ export default function MusicPage() {
                       </div>
                       <div className="mt-6 space-y-1">
                         <h2 className="text-2xl font-semibold tracking-tight">
-                          Made for You
+                          Made for you
                         </h2>
                         <p className="text-sm text-muted-foreground">
-                          Your personal playlists. Updated daily.
+                          Revisit other books
                         </p>
                       </div>
                       <Separator className="my-4" />
@@ -98,7 +93,7 @@ export default function MusicPage() {
                       </div>
                     </TabsContent>
                     <TabsContent
-                      value="podcasts"
+                      value="clippings"
                       className="h-full flex-col border-none p-0 data-[state=active]:flex"
                     >
                       <div className="flex items-center justify-between">
@@ -107,7 +102,7 @@ export default function MusicPage() {
                             New Episodes
                           </h2>
                           <p className="text-sm text-muted-foreground">
-                            Your favorite podcasts. Updated daily.
+                            Your favorite clippings. Updated daily.
                           </p>
                         </div>
                       </div>
