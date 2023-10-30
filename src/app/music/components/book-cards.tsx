@@ -1,9 +1,9 @@
 "use client";
-import { useClippingsCollection } from "@/lib/clippings-collection-provider";
+import { useBooksCollection } from "@/lib/clippings-collection-provider";
 import { AlbumArtwork } from "./album-artwork";
 
 export function BooksCards() {
-  const { clippingsCollection } = useClippingsCollection();
+  const { booksCollection: clippingsCollection } = useBooksCollection();
 
   const clippingsEntries = clippingsCollection
     ? Object.entries(clippingsCollection).slice(0, 4)
@@ -12,7 +12,7 @@ export function BooksCards() {
   if (clippingsEntries != null) {
     return (
       <div className="flex flex-wrap gap-y-6 space-x-4 pb-4">
-        {clippingsEntries.map(([slug, clippings]) => (
+        {clippingsEntries.map(([slug, { clippings }]) => (
           <AlbumArtwork
             key={slug}
             album={{

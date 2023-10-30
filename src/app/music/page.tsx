@@ -17,10 +17,10 @@ import { playlists } from "./data/playlists";
 import { BooksCards } from "./components/book-cards";
 import { Suspense } from "react";
 import { AddClippingsButton } from "./components/add-clippings";
-import { useClippingsCollection } from "@/lib/clippings-collection-provider";
+import { useBooksCollection } from "@/lib/clippings-collection-provider";
 
 export default function MusicPage() {
-  const { clippingsCollection } = useClippingsCollection();
+  const { booksCollection } = useBooksCollection();
 
   return (
     <>
@@ -59,8 +59,8 @@ export default function MusicPage() {
                         </div>
                       </div>
                       <Separator className="my-4" />
-                      {clippingsCollection &&
-                      Object.keys(clippingsCollection).length > 0 ? (
+                      {booksCollection &&
+                      Object.keys(booksCollection).length > 0 ? (
                         <>
                           <div className="relative">
                             <ScrollArea>

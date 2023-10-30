@@ -2,10 +2,10 @@
 import { FileInputForm } from "@/components/file-input-form";
 import { readFile } from "@/lib/clippings-utils";
 
-import { useClippingsCollection } from "@/lib/clippings-collection-provider";
+import { useBooksCollection } from "@/lib/clippings-collection-provider";
 
 export function MyClippingsForm() {
-  const { setClippingsCollection } = useClippingsCollection();
+  const { setBooksCollection } = useBooksCollection();
   return (
     <>
       <FileInputForm
@@ -16,7 +16,7 @@ export function MyClippingsForm() {
         handleSubmit={async (e) => {
           const groupedClippings = await readFile(e[0]);
           if (groupedClippings) {
-            setClippingsCollection(groupedClippings);
+            setBooksCollection(groupedClippings);
           }
         }}
       />

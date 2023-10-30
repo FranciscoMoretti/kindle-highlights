@@ -1,7 +1,8 @@
 // const dropArea = document.getElementById("drop-area") as HTMLDivElement;
 // const bookEmojis: string[] = ["📕", "📙", "📒", "📗", "📘", "📓", "📔"];
 
-import { type Clipping, type ClippingsCollection } from "@/lib/types/clippings";
+import { type Clipping } from "@/lib/types/clippings";
+import { type BooksCollection } from "@/lib/types/books-collection";
 import { slugify } from "transliteration";
 
 function download(
@@ -88,7 +89,7 @@ function getAttribute(attribute: string, regex?: RegExp): string {
     : cleanedAttribute;
 }
 
-export function readFile(file: File): Promise<ClippingsCollection> {
+export function readFile(file: File): Promise<BooksCollection> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
 
@@ -106,7 +107,7 @@ export function readFile(file: File): Promise<ClippingsCollection> {
         const clippingsCollection = Object.fromEntries(
           Object.entries(groupedClippings).map(([title, clippings]) => [
             slugify(title),
-            clippings,
+            { clippings },
           ]),
         );
         // const booksTitles = Object.keys(groupedClippings);

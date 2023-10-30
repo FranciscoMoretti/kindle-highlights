@@ -1,19 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { useClippingsCollection } from "@/lib/clippings-collection-provider";
+import { useBooksCollection } from "@/lib/clippings-collection-provider";
 import Link from "next/link";
 
 export function RecentBooksNavlinks() {
-  const { clippingsCollection } = useClippingsCollection();
+  const { booksCollection } = useBooksCollection();
 
   // TODO: Should sort by date
-  const clippingsEntries = clippingsCollection
-    ? Object.entries(clippingsCollection)
+  const clippingsEntries = booksCollection
+    ? Object.entries(booksCollection)
     : null;
 
   if (clippingsEntries != null) {
     return (
       <div className="space-y-1 p-2">
-        {clippingsEntries.map(([slug, clippings], i) => (
+        {clippingsEntries.map(([slug, { clippings }], i) => (
           <Link href={"/book/" + slug} key={slug}>
             <Button
               key={`${slug}`}

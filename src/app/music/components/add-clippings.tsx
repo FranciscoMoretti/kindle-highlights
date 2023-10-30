@@ -14,14 +14,14 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useClippingsCollection } from "@/lib/clippings-collection-provider";
+import { useBooksCollection } from "@/lib/clippings-collection-provider";
 import { useState } from "react";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
 
 export function AddClippingsButton() {
   const [open, setOpen] = useState(false);
 
-  const { setClippingsCollection } = useClippingsCollection();
+  const { setBooksCollection } = useBooksCollection();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -43,7 +43,7 @@ export function AddClippingsButton() {
           handleSubmit={async (e) => {
             const groupedClippings = await readFile(e[0]);
             if (groupedClippings) {
-              setClippingsCollection(groupedClippings);
+              setBooksCollection(groupedClippings);
               setOpen(false);
             }
           }}

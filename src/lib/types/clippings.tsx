@@ -5,4 +5,3 @@ export type Clipping = {
   timestamp: string;
   fullText: string;
 };
-export type ClippingsCollection = Record<string, Clipping[]>;

@@ -1,25 +1,20 @@
 "use client";
-import { ClippingsCollection } from "@/lib/types/clippings";
 import { BookCard } from "./book-card";
-import { useClippingsCollection } from "@/lib/clippings-collection-provider";
+import { useBooksCollection } from "@/lib/clippings-collection-provider";
 
 // HighlightList component
 export const BooksList: React.FC<{}> = () => {
-  const { clippingsCollection } = useClippingsCollection();
-  const slugs = clippingsCollection
-    ? Object.entries(clippingsCollection).keys()
-    : null;
+  const { booksCollection } = useBooksCollection();
+  const slugs = booksCollection ? Object.entries(booksCollection).keys() : null;
 
   return (
     <div>
       <h2>List of Highlights</h2>
       <div className="grid-col-1 grid w-full gap-x-4 gap-y-6 lg:grid-cols-2 xl:grid-cols-3">
-        {clippingsCollection
-          ? Object.entries(clippingsCollection).map(
-              ([title, clippings], index) => (
-                <BookCard key={index} slug={title} clippings={clippings} />
-              ),
-            )
+        {booksCollection
+          ? Object.entries(booksCollection).map(([slug, book], index) => (
+              <BookCard key={index} slug={slug} clippings={book.clippings} />
+            ))
           : null}
       </div>
     </div>

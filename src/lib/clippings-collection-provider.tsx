@@ -6,70 +6,66 @@ import React, {
   useState,
   useEffect,
 } from "react";
-import { type ClippingsCollection } from "@/lib/types/clippings";
-import { set } from "zod";
+import { type BooksCollection } from "@/lib/types/books-collection";
 
-type ClippingsCollectionContextType = {
-  clippingsCollection: ClippingsCollection | undefined;
-  setClippingsCollection: (clippings: ClippingsCollection) => void;
+type BooksCollectionContextType = {
+  booksCollection: BooksCollection | undefined;
+  setBooksCollection: (booksCollection: BooksCollection) => void;
 };
 
-const ClippingsCollectionContext = createContext<
-  ClippingsCollectionContextType | undefined
+const BooksCollectionContext = createContext<
+  BooksCollectionContextType | undefined
 >(undefined);
 
-type ClippingsCollectionProviderProps = {
+type BooksCollectionProviderProps = {
   children: ReactNode;
 };
 
-const LOCAL_STORAGE_KEY = "clippingsData";
+const LOCAL_STORAGE_KEY = "booksData";
 
-const ClippingsCollectionProvider: React.FC<
-  ClippingsCollectionProviderProps
-> = ({ children }) => {
+const BooksCollectionProvider: React.FC<BooksCollectionProviderProps> = ({
+  children,
+}) => {
   const localStorage =
     typeof window !== "undefined" ? window.localStorage : undefined;
-  const [clippingsCollection, setClippingsCollection] = useState<
-    ClippingsCollection | undefined
+  const [booksCollection, setBooksCollection] = useState<
+    BooksCollection | undefined
   >(undefined);
 
   useEffect(() => {
     const storedData = localStorage?.getItem(LOCAL_STORAGE_KEY);
     if (storedData != undefined && storedData != "undefined") {
-      if(storedData != null){
-        setClippingsCollection(JSON.parse(storedData) as ClippingsCollection);
-      }else{
-        setClippingsCollection({});
+      if (storedData != null) {
+        setBooksCollection(JSON.parse(storedData) as BooksCollection);
+      } else {
+        setBooksCollection({});
       }
     }
   }, []); // Runs once on component mount
 
   useEffect(() => {
-    localStorage?.setItem(
-      LOCAL_STORAGE_KEY,
-      JSON.stringify(clippingsCollection),
-    );
-  }, [clippingsCollection]);
+    localStorage?.setItem(LOCAL_STORAGE_KEY, JSON.stringify(booksCollection));
+  }, [booksCollection]);
   return (
-    <ClippingsCollectionContext.Provider
+    <BooksCollectionContext.Provider
       value={{
-        clippingsCollection,
-        setClippingsCollection,
+        booksCollection: booksCollection,
+        setBooksCollection: setBooksCollection,
       }}
     >
       {children}
-    </ClippingsCollectionContext.Provider>
+    </BooksCollectionContext.Provider>
   );
 };
 
-function useClippingsCollection() {
-  const context = useContext(ClippingsCollectionContext);
+function useBooksCollection() {
+  const context = useContext(BooksCollectionContext);
   if (context === undefined) {
     throw new Error(
-      "useClippingsCollection must be used within a ClippingsCollectionProvider",
+      "useBooksCollection must be used within a BooksCollectionProvider",
     );
   }
   return context;
 }
 
-export { ClippingsCollectionProvider, useClippingsCollection };
+export { BooksCollectionProvider, useBooksCollection };

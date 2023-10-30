@@ -1,18 +1,16 @@
 "use client";
-import { useClippingsCollection } from "../lib/clippings-collection-provider";
+import { useBooksCollection } from "../lib/clippings-collection-provider";
 import { HighlightsList } from "./highlights-list";
 
 export default function BookContent({ slug }: { slug: string }) {
-  const { clippingsCollection } = useClippingsCollection();
-  const bookClippings = clippingsCollection?.[slug]
-    ? clippingsCollection[slug]
-    : null;
+  const { booksCollection: booksCollection } = useBooksCollection();
+  const book = booksCollection?.[slug] ? booksCollection[slug] : null;
   return (
     <>
-      {bookClippings ? (
+      {book ? (
         <>
-          <div>Book: {bookClippings[0]?.title}</div>
-          <HighlightsList clippings={bookClippings} />
+          <div>Book: {book.clippings[0]?.title}</div>
+          <HighlightsList clippings={book.clippings} />
         </>
       ) : (
         <div>Book not found for slug {slug}</div>
