@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 import { AlbumArtwork } from "./components/album-artwork";
 import { Menu } from "./components/menu";
-import { PodcastEmptyPlaceholder } from "./components/podcast-empty-placeholder";
+import { ClippingsEmptyPlaceholder } from "./components/clippings-empty-placeholder";
 import { Sidebar } from "./components/sidebar";
 import { listenNowAlbums, madeForYouAlbums } from "./data/albums";
 import { playlists } from "./data/playlists";
@@ -107,7 +107,7 @@ export default function MusicPage() {
                         </div>
                       </div>
                       <Separator className="my-4" />
-                      <PodcastEmptyPlaceholder />
+                      <ClippingsEmptyPlaceholder />
                     </TabsContent>
                   </Tabs>
                 </div>

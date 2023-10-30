@@ -1,6 +1,6 @@
 import { AddClippingsButton } from "./add-clippings";
 
-export function PodcastEmptyPlaceholder() {
+export function ClippingsEmptyPlaceholder() {
   return (
     <div className="flex h-[450px] shrink-0 items-center justify-center rounded-md border border-dashed">
       <div className="mx-auto flex max-w-[420px] flex-col items-center justify-center text-center">
@@ -19,9 +19,9 @@ export function PodcastEmptyPlaceholder() {
           <path d="M17 18.5a9 9 0 1 0-10 0" />
         </svg>
 
-        <h3 className="mt-4 text-lg font-semibold">No episodes added</h3>
+        <h3 className="mt-4 text-lg font-semibold">No clippings added</h3>
         <p className="mb-4 mt-2 text-sm text-muted-foreground">
-          You have not added any podcasts. Add one below.
+          You have not added any clippings. Add one below.
         </p>
         <AddClippingsButton />
       </div>
