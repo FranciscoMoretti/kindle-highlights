@@ -1,17 +1,19 @@
 import { BooksCollection } from "../types/books-collection";
+import { Clipping } from "../types/clippings";
 
 export function addClippingsToCollection(
   currentBooksCollection: BooksCollection,
   newBooksCollection: BooksCollection,
-): number {
-  let clippingsAdded = 0;
+): { newClippingsAdded: Clipping[]; newBooksAdded: string[] } {
+  const newClippingsAdded = [];
+  const newBooksAdded = [];
 
   for (const [newBookTitle, newBook] of Object.entries(newBooksCollection)) {
     if (!currentBooksCollection[newBookTitle]) {
       currentBooksCollection[newBookTitle] = newBook;
-      clippingsAdded += newBook.clippings.length;
+      newBooksAdded.push(newBookTitle);
+      newClippingsAdded.push(...newBook.clippings);
     } else {
-      // Check if clippings already exist and add new ones
       for (const newClipping of newBook.clippings) {
         if (
           !currentBooksCollection[newBookTitle]?.clippings.some(
@@ -19,18 +21,25 @@ export function addClippingsToCollection(
           )
         ) {
           currentBooksCollection[newBookTitle]?.clippings.push(newClipping);
-          clippingsAdded++;
+          newClippingsAdded.push(newClipping);
         }
       }
     }
   }
 
-  return clippingsAdded;
+  return { newClippingsAdded, newBooksAdded };
 }
 
-export function countClippingsInCollection(
+export function countCollectionClippings(
   booksCollection: BooksCollection,
 ): number {
-  return Object.values(booksCollection).flatMap((book) => book.clippings)
-    .length;
+  return getCollectionClippings(booksCollection).length;
+}
+
+export function getCollectionClippings(booksCollection: BooksCollection) {
+  return Object.values(booksCollection).flatMap((book) => book.clippings);
+}
+
+export function getCollectionBookSlugs(booksCollection: BooksCollection) {
+  return Object.keys(booksCollection);
 }

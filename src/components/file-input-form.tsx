@@ -36,7 +36,7 @@ export function FileInputForm({
     files: z
       .custom<FileList>(
         (val) => val instanceof FileList,
-        "Required file list. ",
+        "A file is required. ",
       )
       .refine((files) => files.length > 0, `Required at least one file`)
       .refine((files) => files.length < 2, `Only one file is allowed.`)

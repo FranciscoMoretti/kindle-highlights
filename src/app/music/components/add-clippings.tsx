@@ -20,8 +20,12 @@ import { PlusCircledIcon } from "@radix-ui/react-icons";
 import { produce } from "immer";
 import {
   addClippingsToCollection,
-  countClippingsInCollection,
+  countCollectionClippings,
+  getCollectionBookSlugs,
+  getCollectionClippings,
 } from "@/lib/utils/books-collection";
+import { Clipping } from "@/lib/types/clippings";
+import { Book } from "@/lib/types/books-collection";
 
 export function AddClippingsButton() {
   const [open, setOpen] = useState(false);
@@ -48,22 +52,24 @@ export function AddClippingsButton() {
           handleSubmit={async (e) => {
             const newBooksColleciton = await readFile(e[0]);
             if (newBooksColleciton) {
-              let newClippingsNumber = 0;
+              let newClippings: Clipping[] = [];
+              let newBooks: string[] = [];
               if (booksCollection) {
                 setBooksCollection(
                   produce(booksCollection, (draft) => {
-                    newClippingsNumber = addClippingsToCollection(
-                      draft,
-                      newBooksColleciton,
-                    );
+                    ({
+                      newClippingsAdded: newClippings,
+                      newBooksAdded: newBooks,
+                    } = addClippingsToCollection(draft, newBooksColleciton));
                   }),
                 );
               } else {
                 setBooksCollection(newBooksColleciton);
-                newClippingsNumber =
-                  countClippingsInCollection(newBooksColleciton);
+                newClippings = getCollectionClippings(newBooksColleciton);
+                newBooks = getCollectionBookSlugs(newBooksColleciton);
               }
-              console.log(`Added ${newClippingsNumber} clippings`);
+              console.log(`Added ${newClippings.length} clippings`);
+              console.log(`Added ${newBooks.length} books`);
               setOpen(false);
             }
           }}
