@@ -17,11 +17,16 @@ import { Label } from "@/components/ui/label";
 import { useBooksCollection } from "@/lib/clippings-collection-provider";
 import { useState } from "react";
 import { PlusCircledIcon } from "@radix-ui/react-icons";
+import { produce } from "immer";
+import {
+  addClippingsToCollection,
+  countClippingsInCollection,
+} from "@/lib/utils/books-collection";
 
 export function AddClippingsButton() {
   const [open, setOpen] = useState(false);
 
-  const { setBooksCollection } = useBooksCollection();
+  const { booksCollection, setBooksCollection } = useBooksCollection();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -41,9 +46,24 @@ export function AddClippingsButton() {
           description={"Kindle storage: 'Kindle/documents/My Clippings.txt'"}
           submitButtonText={"Import Clippings"}
           handleSubmit={async (e) => {
-            const groupedClippings = await readFile(e[0]);
-            if (groupedClippings) {
-              setBooksCollection(groupedClippings);
+            const newBooksColleciton = await readFile(e[0]);
+            if (newBooksColleciton) {
+              let newClippingsNumber = 0;
+              if (booksCollection) {
+                setBooksCollection(
+                  produce(booksCollection, (draft) => {
+                    newClippingsNumber = addClippingsToCollection(
+                      draft,
+                      newBooksColleciton,
+                    );
+                  }),
+                );
+              } else {
+                setBooksCollection(newBooksColleciton);
+                newClippingsNumber =
+                  countClippingsInCollection(newBooksColleciton);
+              }
+              console.log(`Added ${newClippingsNumber} clippings`);
               setOpen(false);
             }
           }}
