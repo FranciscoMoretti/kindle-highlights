@@ -3,7 +3,7 @@ import { BookCard } from "./book-card";
 import { useBooksCollection } from "@/lib/clippings-collection-provider";
 
 // HighlightList component
-export const BooksList: React.FC<{}> = () => {
+export function BooksList() {
   const { booksCollection } = useBooksCollection();
   const slugs = booksCollection ? Object.entries(booksCollection).keys() : null;
 
@@ -19,4 +19,4 @@ export const BooksList: React.FC<{}> = () => {
       </div>
     </div>
   );
-};
+}

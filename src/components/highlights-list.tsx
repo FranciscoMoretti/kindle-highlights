@@ -1,4 +1,4 @@
-import { Clipping } from "@/lib/types/clippings";
+import { type Clipping } from "@/lib/types/clippings";
 
 /**
  * v0 by Vercel.

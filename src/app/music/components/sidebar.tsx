@@ -2,8 +2,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
-import { Playlist } from "../data/playlists";
-import { RecentBooksNavlinks } from "./recent-books-navlinks";
+import { type Playlist } from "../data/playlists";
+import { RecentBooksNavLinks } from "./recent-books-navlinks";
 import { Suspense } from "react";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -116,7 +116,7 @@ export function Sidebar({ className, playlists }: SidebarProps) {
           </h2>
           <ScrollArea className="h-[300px] px-1">
             <Suspense>
-              <RecentBooksNavlinks />
+              <RecentBooksNavLinks />
             </Suspense>
           </ScrollArea>
         </div>

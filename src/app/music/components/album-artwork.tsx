@@ -14,7 +14,7 @@ import {
   ContextMenuTrigger,
 } from "@/components/ui/context-menu";
 
-import { Album } from "../data/albums";
+import { type Album } from "../data/albums";
 import { playlists } from "../data/playlists";
 import Link from "next/link";
 

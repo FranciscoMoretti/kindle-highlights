@@ -1,5 +1,5 @@
-import { BooksCollection } from "../types/books-collection";
-import { Clipping } from "../types/clippings";
+import { type BooksCollection } from "../types/books-collection";
+import { type Clipping } from "../types/clippings";
 
 export function addClippingsToCollection(
   currentBooksCollection: BooksCollection,

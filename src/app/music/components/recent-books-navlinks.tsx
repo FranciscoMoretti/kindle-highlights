@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useBooksCollection } from "@/lib/clippings-collection-provider";
 import Link from "next/link";
 
-export function RecentBooksNavlinks() {
+export function RecentBooksNavLinks() {
   const { booksCollection } = useBooksCollection();
 
   // TODO: Should sort by date

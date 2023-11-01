@@ -40,7 +40,7 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY: z.string(),
-    // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    // NEXT_PUBLIC_CLIENTÈLE: z.string(),
   },
 
   /**

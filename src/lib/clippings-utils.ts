@@ -84,9 +84,10 @@ function parseClippings(contents: string): Clipping[] {
 
 function getAttribute(attribute: string, regex?: RegExp): string {
   const cleanedAttribute = attribute.trim();
-  return regex
+  const value = regex
     ? cleanedAttribute.split(regex).filter(Boolean)[1]
     : cleanedAttribute;
+  return value ?? "";
 }
 
 export function readFile(file: File): Promise<BooksCollection> {
@@ -122,47 +123,7 @@ export function readFile(file: File): Promise<BooksCollection> {
   });
 }
 
-function renderBook(
-  books: Record<string, { title: string; text: string; timestamp: string }[]>,
-  title: string,
-  amountOfClippings: number,
-  bookIndex: number,
-) {
-  // create a new div element
-  const newDiv = document.createElement("div");
-  const anchor = document.createElement("a");
-  anchor.id = `book-${bookIndex}`;
-  // and give it some content
-  const paragraph = document.createElement("p");
-  const newContent = document.createTextNode(
-    `${bookEmojis[bookIndex]} ${title}: ${amountOfClippings}`,
-  );
-  // add the text node to the newly created div
-  paragraph.appendChild(newContent);
-  anchor.appendChild(paragraph);
-  newDiv.appendChild(anchor);
-  newDiv.classList.add("book");
-  // add the newly created element and its content into the DOM
-  const booksList = document.getElementById("books-list");
-  const firstChild = booksList?.firstChild;
-
-  if (booksList) {
-    const contents = generateMarkdown(title, clippings);
-    const filename = title
-      .replace(/\"/gi, "'")
-      .replace(/[\\\/"\*\:\?<>|]/gi, "");
-    download(anchor, `${filename}.md`, contents);
-    booksList.insertBefore(newDiv, firstChild);
-  }
-}
-
-function generateDownload(title, clippings) {
-  const contents = generateMarkdown(title, clippings);
-  const filename = generateFilename(title);
-  download(anchor, `${filename}.md`, contents);
-}
-
-export function generateFilename(title: any) {
+export function generateFilename(title: string) {
   return title.replace(/\"/gi, "'").replace(/[\\\/"\*\:\?<>|]/gi, "");
 }
 
@@ -176,11 +137,11 @@ export function generateMarkdown(title: string, clippings: Clipping[]): string {
   // return str;
 }
 
-const groupBy = (key: string) => (array: Clipping[]) =>
+const groupBy = (key: "title" | "author") => (array: Clipping[]) =>
   array.reduce(
     (objectsByKeyValue, obj) => {
       const value = obj[key];
-      objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+      objectsByKeyValue[value] = (objectsByKeyValue[value] ?? []).concat(obj);
       return objectsByKeyValue;
     },
     {} as Record<string, Clipping[]>,

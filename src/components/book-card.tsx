@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { generateFilename, generateMarkdown } from "@/lib/clippings-utils";
-import { Clipping } from "@/lib/types/clippings";
+import { type Clipping } from "@/lib/types/clippings";
 
 import { MdExporter } from "./md-exporter";
 import Link from "next/link";

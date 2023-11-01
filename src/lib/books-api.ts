@@ -1,8 +1,23 @@
 // "use server";
-import { BookMetadata } from "./types/book-metadata";
+import { type BookMetadata } from "./types/book-metadata";
 import { env } from "@/env.mjs";
 
 const apiUrl = "https://www.googleapis.com/books/v1/volumes";
+
+type VolumeInfo = {
+  title: string;
+  authors: string[];
+  description: string;
+  publishedDate: string;
+  previewLink: string;
+  imageLinks: {
+    thumbnail: string;
+  };
+};
+
+type GoogleBooksResponse = {
+  items?: { volumeInfo: VolumeInfo }[];
+};
 
 export function fetchSearchBookMetadata(
   title: string,
@@ -16,16 +31,16 @@ export function fetchSearchBookMetadata(
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
-      return response.json();
+      return response.json() as Promise<GoogleBooksResponse>;
     })
     .then((data) => {
-      const items = data.items || [];
+      const items = data.items ?? [];
 
-      if (items.length > 0) {
+      if (items.length > 0 && items[0]) {
         const firstBook = items[0].volumeInfo;
         return {
           title: firstBook.title,
-          author: firstBook.author,
+          author: firstBook.authors.join(", "),
           description: firstBook.description,
           publishedDate: firstBook.publishedDate,
           image: changeZoomValue(firstBook.imageLinks.thumbnail, 2),

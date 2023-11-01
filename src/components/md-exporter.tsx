@@ -3,7 +3,7 @@ export function MdExporter({
   filename,
   children,
 }: {
-  content: any;
+  content: string;
   filename: string;
   children: React.ReactNode;
 }) {

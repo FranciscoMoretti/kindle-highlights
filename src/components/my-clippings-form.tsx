@@ -14,9 +14,11 @@ export function MyClippingsForm() {
           "Located in kindle storage at 'Kindle/documents/My Clippings.txt'"
         }
         handleSubmit={async (e) => {
-          const groupedClippings = await readFile(e[0]);
-          if (groupedClippings) {
-            setBooksCollection(groupedClippings);
+          if (e[0]) {
+            const groupedClippings = await readFile(e[0]);
+            if (groupedClippings) {
+              setBooksCollection(groupedClippings);
+            }
           }
         }}
       />

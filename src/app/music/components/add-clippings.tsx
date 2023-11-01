@@ -20,10 +20,10 @@ import {
   getCollectionBookSlugs,
   getCollectionClippings,
 } from "@/lib/utils/books-collection";
-import { Clipping } from "@/lib/types/clippings";
-import { Book, BooksCollection } from "@/lib/types/books-collection";
+import { type Clipping } from "@/lib/types/clippings";
+import { Book, type BooksCollection } from "@/lib/types/books-collection";
 import { fetchSearchBookMetadata } from "@/lib/books-api";
-import { BookMetadata } from "@/lib/types/book-metadata";
+import { type BookMetadata } from "@/lib/types/book-metadata";
 
 function DialogContentMyClippingsForm({
   handleReadBookCollection,
@@ -63,7 +63,7 @@ function DialogLoadedClippings({
       <DialogHeader>
         <DialogTitle>Clippings Loaded 🎉</DialogTitle>
         <DialogDescription>
-          You've successfully uploaded a clippings file.
+          {"You've successfully uploaded a clippings file."}
         </DialogDescription>
       </DialogHeader>
       <ul className="px-6">
@@ -141,8 +141,7 @@ async function fetchBookMetadataFromSlug(
   bookSlug: string,
 ): Promise<BookMetadata | null | undefined> {
   console.log({ booksCollection });
-  const { title, author } =
-    (booksCollection && booksCollection[bookSlug]?.clippings[0]) || {};
+  const { title, author } = booksCollection?.[bookSlug]?.clippings[0] ?? {};
 
   console.log({ title, author });
 
@@ -169,7 +168,7 @@ function updateMetadataForAddedBooks({
         const bookDraft = newBookSlug ? draft[newBookSlug] : undefined;
         if (bookDraft) {
           bookDraft.metadata = metadata;
-          console.log(`Added metadata ${metadata} to ${newBookSlug}`);
+          console.log(`Added metadata to ${newBookSlug}`);
         }
       }
     });
