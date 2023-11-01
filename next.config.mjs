@@ -8,7 +8,7 @@ await import("./src/env.mjs");
 const config = {
   swcMinify: true,
   images: {
-    domains: ["images.unsplash.com"],
+    domains: ["images.unsplash.com", "books.google.com"],
   },
 };
 

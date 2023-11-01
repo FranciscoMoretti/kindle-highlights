@@ -3,22 +3,23 @@ import { useBooksCollection } from "@/lib/clippings-collection-provider";
 import { AlbumArtwork } from "./album-artwork";
 
 export function BooksCards() {
-  const { booksCollection: clippingsCollection } = useBooksCollection();
+  const { booksCollection } = useBooksCollection();
 
-  const clippingsEntries = clippingsCollection
-    ? Object.entries(clippingsCollection).slice(0, 4)
+  const book = booksCollection
+    ? Object.entries(booksCollection).slice(0, 4)
     : null;
 
-  if (clippingsEntries != null) {
+  if (book != null) {
     return (
       <div className="flex flex-wrap gap-y-6 space-x-4 pb-4">
-        {clippingsEntries.map(([slug, { clippings }]) => (
+        {book.map(([slug, { metadata, clippings }]) => (
           <AlbumArtwork
             key={slug}
             album={{
-              name: clippings[0]?.title ?? "",
-              artist: clippings[0]?.author ?? "",
+              name: metadata?.title ?? clippings[0]?.title ?? "",
+              artist: metadata?.author ?? clippings[0]?.author ?? "",
               cover:
+                metadata?.image ??
                 "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80",
             }}
             slug={slug}
