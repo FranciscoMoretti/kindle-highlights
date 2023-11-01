@@ -40,15 +40,16 @@ export function AlbumArtwork({
       {/* <ContextMenu>
         <ContextMenuTrigger> */}
       <Link href={"/book/" + slug}>
-        <div className="grid h-[400px] w-[250px] overflow-hidden rounded-md">
+        <div className="grid overflow-hidden rounded-md bg-muted">
           <Image
             src={album.cover}
             alt={album.name}
-            width={250}
-            height={400}
+            width={width}
+            height={height}
             className={cn(
               "h-auto w-auto object-cover transition-all hover:scale-105",
               // aspectRatio === "portrait" ? "aspect-[3/4]" : "aspect-square",
+              aspectRatio === "portrait" ? "" : "aspect-square h-full",
             )}
             style={{
               objectFit: "contain",
