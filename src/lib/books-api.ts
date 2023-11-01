@@ -1,4 +1,4 @@
-// "use server";
+"use server";
 import { type BookMetadata } from "./types/book-metadata";
 import { env } from "@/env.mjs";
 
@@ -19,12 +19,12 @@ type GoogleBooksResponse = {
   items?: { volumeInfo: VolumeInfo }[];
 };
 
-export function fetchSearchBookMetadata(
+export async function fetchSearchBookMetadata(
   title: string,
   author: string,
 ): Promise<BookMetadata | undefined> {
   const query = `${title}+inauthor:${author}`;
-  const url = `${apiUrl}?q=${query}&key=${env.NEXT_PUBLIC_GOOGLE_BOOKS_API_KEY}`;
+  const url = `${apiUrl}?q=${query}&key=${env.GOOGLE_BOOKS_API_KEY}`;
 
   return fetch(url)
     .then((response) => {
