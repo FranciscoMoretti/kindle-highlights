@@ -2,6 +2,9 @@
 import { useBooksCollection } from "@/lib/clippings-collection-provider";
 import { AlbumArtwork } from "./album-artwork";
 
+const IMAGE_NOT_AVAILABLE =
+  "https://books.google.com/books/content?id=xcmSAQAACAAJ&printsec=frontcover&img=1&zoom=2&source=gbs_api";
+
 export function BooksCards() {
   const { booksCollection } = useBooksCollection();
 
@@ -18,9 +21,7 @@ export function BooksCards() {
             album={{
               name: metadata?.title ?? clippings[0]?.title ?? "",
               artist: metadata?.author ?? clippings[0]?.author ?? "",
-              cover:
-                metadata?.image ??
-                "https://images.unsplash.com/photo-1611348586804-61bf6c080437?w=300&dpr=2&q=80",
+              cover: metadata?.image ?? IMAGE_NOT_AVAILABLE,
             }}
             slug={slug}
             className="w-[250px]"

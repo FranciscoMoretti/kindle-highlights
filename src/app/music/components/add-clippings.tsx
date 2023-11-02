@@ -22,7 +22,10 @@ import {
 } from "@/lib/utils/books-collection";
 import { type Clipping } from "@/lib/types/clippings";
 import { Book, type BooksCollection } from "@/lib/types/books-collection";
-import { fetchSearchBookMetadata } from "@/lib/books-api";
+import {
+  fetchSearchBookMetadata,
+  fetchSearchMultiBookMetadata,
+} from "@/lib/books-api";
 import { type BookMetadata } from "@/lib/types/book-metadata";
 
 function DialogContentMyClippingsForm({
@@ -108,25 +111,25 @@ export function AddClippingsButton() {
           console.log(`Read ${addedClippings.length} clippings`);
           console.log(`Read ${addedBooks.length} books`);
           setFormOpen(false);
-          const newBooks2 = addedBooks.slice(0, 2);
 
-          const bookMetadataPromises = newBooks2.map(async (bookSlug) =>
-            fetchBookMetadataFromSlug(newCollection, bookSlug),
+          const addedBooksTitleAuthors = addedBooks.map((bookSlug) =>
+            getTitleAuthorFromSlug(newCollection, bookSlug),
           );
 
-          const booksMetadata = await Promise.all(bookMetadataPromises);
-          console.log({ bookMetadata: booksMetadata });
-          if (booksMetadata.length !== newBooks2.length) {
+          const booksMetadata = await fetchSearchMultiBookMetadata(
+            addedBooksTitleAuthors,
+          );
+          if (booksMetadata.length !== addedBooks.length) {
             console.error(
               "Unexpected mismatched lengths of bookMetadata and newBooks",
             );
           } else {
-            if (newCollection && booksMetadata && newBooks2)
+            if (newCollection && booksMetadata && addedBooks)
               setBooksCollection(
                 updateMetadataForAddedBooks({
                   currentBooksCollection: newCollection,
                   addedBookMetadata: booksMetadata,
-                  addedBooks: newBooks2,
+                  addedBooks: addedBooks,
                 }),
               );
           }
@@ -136,20 +139,16 @@ export function AddClippingsButton() {
   );
 }
 
-async function fetchBookMetadataFromSlug(
-  booksCollection: BooksCollection | undefined,
+function getTitleAuthorFromSlug(
+  booksCollection: BooksCollection,
   bookSlug: string,
-): Promise<BookMetadata | null | undefined> {
-  console.log({ booksCollection });
+): { title: string; author: string } {
   const { title, author } = booksCollection?.[bookSlug]?.clippings[0] ?? {};
-
-  console.log({ title, author });
-
   if (title && author) {
-    return fetchSearchBookMetadata(title, author);
+    return { title, author };
+  } else {
+    throw Error(`Book of slug ${bookSlug} not found in collection`);
   }
-
-  return null;
 }
 
 function updateMetadataForAddedBooks({

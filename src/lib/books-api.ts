@@ -10,7 +10,7 @@ type VolumeInfo = {
   description: string;
   publishedDate: string;
   previewLink: string;
-  imageLinks: {
+  imageLinks?: {
     thumbnail: string;
   };
 };
@@ -19,11 +19,21 @@ type GoogleBooksResponse = {
   items?: { volumeInfo: VolumeInfo }[];
 };
 
+export async function fetchSearchMultiBookMetadata(
+  titleAuthors: { title: string; author: string }[],
+): Promise<(BookMetadata | null)[]> {
+  const promises = titleAuthors.map(
+    async (titleAuthor) =>
+      await fetchSearchBookMetadata(titleAuthor.title, titleAuthor.author),
+  );
+  return await Promise.all(promises);
+}
+
 export async function fetchSearchBookMetadata(
   title: string,
   author: string,
-): Promise<BookMetadata | undefined> {
-  const query = `${title}+inauthor:${author}`;
+): Promise<BookMetadata | null> {
+  const query = `${title} by ${author}`;
   const url = `${apiUrl}?q=${query}&key=${env.GOOGLE_BOOKS_API_KEY}`;
 
   return fetch(url)
@@ -37,23 +47,44 @@ export async function fetchSearchBookMetadata(
       const items = data.items ?? [];
 
       if (items.length > 0 && items[0]) {
-        const firstBook = items[0].volumeInfo;
-        return {
-          title: firstBook.title,
-          author: firstBook.authors.join(", "),
-          description: firstBook.description,
-          publishedDate: firstBook.publishedDate,
-          image: changeZoomValue(firstBook.imageLinks.thumbnail, 2),
-        };
+        for (const item of items) {
+          const metadata = volumeInfoToMetadata(item.volumeInfo);
+          if (metadata) {
+            return metadata;
+          }
+        }
+        console.error(
+          `No book api item had all the metadata for: ${title} author: ${author}`,
+        );
+        return null;
       } else {
         console.error(`Book not found: ${title} author: ${author}`);
-        return undefined;
+        return null;
       }
     })
     .catch((error) => {
       console.error("Error:", error);
-      return undefined;
+      return null;
     });
+}
+
+function volumeInfoToMetadata(firstBook: VolumeInfo): {
+  title: string;
+  author: string;
+  description: string;
+  publishedDate: string;
+  image: string;
+} | null {
+  if (!firstBook.imageLinks) {
+    return null;
+  }
+  return {
+    title: firstBook.title,
+    author: firstBook.authors.join(", "),
+    description: firstBook.description,
+    publishedDate: firstBook.publishedDate,
+    image: changeZoomValue(firstBook.imageLinks.thumbnail, 2),
+  };
 }
 
 function changeZoomValue(originalUrl: string, newZoomValue: number) {
